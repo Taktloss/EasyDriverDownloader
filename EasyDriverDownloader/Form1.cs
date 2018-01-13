@@ -35,8 +35,7 @@ namespace EasyDriverDownloader
             string responseFromServer = reader.ReadToEnd();
 
             string url = "http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid=57&lid=9&whql=&lang=de&ctk=0";
-            HtmlWeb web = new HtmlWeb();
-            HtmlAgilityPack.HtmlDocument doc = web.Load(url);
+            HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(url);
 
             // Get driver list with XPath	
             HtmlNodeCollection driverNodes = doc.DocumentNode.SelectNodes("//table/tr[@id='driverList']");
@@ -49,7 +48,7 @@ namespace EasyDriverDownloader
                 // Get Version Numbers and create the download Url
                 string version = tmpNodes[2].InnerText;
                 string driverUrl = string.Format("http://de.download.nvidia.com/Windows/{0}/{0}-desktop-win10-64bit-international-whql.exe",version);
-
+                // Add to driveList directory
                 driverList.Add(version, driverUrl);               
             }
 
