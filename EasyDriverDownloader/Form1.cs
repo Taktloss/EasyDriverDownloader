@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
-using System.Xml.Linq;
 using HtmlAgilityPack;
 
 namespace EasyDriverDownloader
@@ -24,7 +19,43 @@ namespace EasyDriverDownloader
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void comboBoxVersion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnDownload.Enabled = true;
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                string driverUrl = driverList[comboBoxVersion.SelectedItem.ToString()];
+                // Get the filename
+                string filename = Path.GetFileName(driverUrl);
+
+                // Create Download events and start Download
+                client.DownloadFileCompleted += Client_DownloadFileCompleted;
+                client.DownloadProgressChanged += Client_DownloadProgressChanged;
+                client.DownloadFileAsync(new Uri(driverUrl), filename);
+            }
+            catch (WebException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            // Show Download progress
+            toolStripProgressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            MessageBox.Show("Download finished");
+        }
+
+        private void frmMain_Load(object sender, EventArgs e)
         {
             WebRequest request = WebRequest.Create("http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid=57&lid=9&whql=&lang=de&ctk=0");
             // Get the stream containing content returned by the server.
@@ -41,50 +72,20 @@ namespace EasyDriverDownloader
             HtmlNodeCollection driverNodes = doc.DocumentNode.SelectNodes("//table/tr[@id='driverList']");
             driverList = new Dictionary<string, string>(driverNodes.Count);
 
-            foreach(HtmlNode currentNode in driverNodes)
+            foreach (HtmlNode currentNode in driverNodes)
             {
                 // Get all column nodes 
                 HtmlNodeCollection tmpNodes = currentNode.SelectNodes(".//td");
                 // Get Version Numbers and create the download Url
                 string version = tmpNodes[2].InnerText;
-                string driverUrl = string.Format("http://de.download.nvidia.com/Windows/{0}/{0}-desktop-win10-64bit-international-whql.exe",version);
+                string driverUrl = string.Format("http://de.download.nvidia.com/Windows/{0}/{0}-desktop-win10-64bit-international-whql.exe", version);
                 // Add to driveList directory
-                driverList.Add(version, driverUrl);               
+                driverList.Add(version, driverUrl);
             }
 
             // Add driverList to combobox and select first item
             comboBoxVersion.Items.AddRange(driverList.Keys.ToArray());
             comboBoxVersion.SelectedIndex = 0;
         }
-
-        private void comboBoxVersion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            button2.Enabled = true;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            WebClient client = new WebClient();
-            string driverUrl = driverList[comboBoxVersion.SelectedItem.ToString()];
-            // Get the filename
-            string filename = Path.GetFileName(driverUrl);
-
-            // Create Download events and start Download
-            client.DownloadFileCompleted += Client_DownloadFileCompleted;
-            client.DownloadProgressChanged += Client_DownloadProgressChanged;
-            client.DownloadFileAsync(new Uri(driverUrl),filename);
-        }
-
-        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            // Show Download progress
-            toolStripProgressBar1.Value = e.ProgressPercentage;
-        }
-
-        private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            MessageBox.Show("Download finished");
-        }
-
     }
 }
