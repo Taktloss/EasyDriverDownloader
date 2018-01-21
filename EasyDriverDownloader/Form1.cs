@@ -33,7 +33,7 @@ namespace EasyDriverDownloader
                 // Get the filename
                 string filename = Path.GetFileName(driverUrl);
 
-                // Create Download events and start Download
+                // Create Download events and start asynchron Download
                 client.DownloadFileCompleted += Client_DownloadFileCompleted;
                 client.DownloadProgressChanged += Client_DownloadProgressChanged;
                 client.DownloadFileAsync(new Uri(driverUrl), filename);
@@ -53,19 +53,16 @@ namespace EasyDriverDownloader
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             MessageBox.Show("Download finished");
+            // Open current directory
+            System.Diagnostics.Process.Start(".");
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            WebRequest request = WebRequest.Create("http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid=57&lid=9&whql=&lang=de&ctk=0");
-            // Get the stream containing content returned by the server.
-            Stream dataStream = request.GetResponse().GetResponseStream();
-            // Open the stream using a StreamReader for easy access.
-            StreamReader reader = new StreamReader(dataStream);
-            // Read the content.
-            string responseFromServer = reader.ReadToEnd();
-
-            string url = "http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid=57&lid=9&whql=&lang=de&ctk=0";
+            // Get System info and changed URL for the current OS
+             string OSid = CurrentOS();
+            // osid = Which OS
+            string url = string.Format("http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid={0}&lid=9&whql=&lang=de&ctk=0",OSid);
             HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(url);
 
             // Get driver list with XPath	
@@ -82,10 +79,48 @@ namespace EasyDriverDownloader
                 // Add to driveList directory
                 driverList.Add(version, driverUrl);
             }
-
             // Add driverList to combobox and select first item
             comboBoxVersion.Items.AddRange(driverList.Keys.ToArray());
             comboBoxVersion.SelectedIndex = 0;
         }
+
+        class OSInfo
+        {
+            public string OS { get; set; }
+            public string Version { get; set; }
+            public bool is64bit { get; set; }
+
+            public void GetCurrentOS()
+            {
+                // Get current System info
+                OS = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.OperatingSystem;
+                // Environment.OSVersion.VersionString gives back the wrong Windows Version for Win 10 !?
+                //string Version = Environment.OSVersion.VersionString;
+                Version = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.OperatingSystemVersion;
+                is64bit = Environment.Is64BitOperatingSystem;
+            }
+        }
+
+        private string CurrentOS()
+        {
+            OSInfo osInfo = new OSInfo();
+            osInfo.GetCurrentOS();
+
+            if (string.Equals(osInfo.OS, "Windows"))
+            {
+                // Shorten Version string so we only need to check the first digit
+                string versionShort = osInfo.Version.Substring(0, osInfo.Version.IndexOf('.'));
+                switch ( versionShort)
+                {
+                    case "10":  return "57";
+                    case "8":   return "41";
+                    case "7":   return "19";
+                    default:
+                        break;
+                }
+            }
+            return string.Empty;
+        }
+
     }
 }

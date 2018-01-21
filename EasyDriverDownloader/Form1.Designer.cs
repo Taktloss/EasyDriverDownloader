@@ -39,18 +39,18 @@
             // 
             this.comboBoxVersion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBoxVersion.FormattingEnabled = true;
-            this.comboBoxVersion.Location = new System.Drawing.Point(33, 12);
+            this.comboBoxVersion.Location = new System.Drawing.Point(33, 44);
             this.comboBoxVersion.Name = "comboBoxVersion";
-            this.comboBoxVersion.Size = new System.Drawing.Size(98, 21);
+            this.comboBoxVersion.Size = new System.Drawing.Size(113, 21);
             this.comboBoxVersion.TabIndex = 1;
             this.comboBoxVersion.SelectedIndexChanged += new System.EventHandler(this.comboBoxVersion_SelectedIndexChanged);
             // 
             // btnDownload
             // 
             this.btnDownload.Enabled = false;
-            this.btnDownload.Location = new System.Drawing.Point(33, 39);
+            this.btnDownload.Location = new System.Drawing.Point(33, 71);
             this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(98, 23);
+            this.btnDownload.Size = new System.Drawing.Size(113, 23);
             this.btnDownload.TabIndex = 2;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
@@ -60,9 +60,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripProgressBar1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 138);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 120);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(162, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(186, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -77,11 +77,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(162, 160);
+            this.ClientSize = new System.Drawing.Size(186, 142);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.comboBoxVersion);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmMain";
             this.Text = "Easy Driver Downloader";
             this.Load += new System.EventHandler(this.frmMain_Load);
