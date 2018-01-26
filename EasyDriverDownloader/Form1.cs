@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using HtmlAgilityPack;
+using System.Drawing;
 
 namespace EasyDriverDownloader
 {
@@ -52,15 +53,24 @@ namespace EasyDriverDownloader
 
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            MessageBox.Show("Download finished");
+            // Show Notify Message in taskbar
+            NotifyIcon notifyMessage = new NotifyIcon();
+            notifyMessage.Icon = SystemIcons.Application;
+            notifyMessage.Visible = true;
+            notifyMessage.ShowBalloonTip(5000, "Download finished", "The Nvidia Setup file was download", ToolTipIcon.Info);
+            
             // Open current directory
             System.Diagnostics.Process.Start(".");
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            OSInfo osInfo = new OSInfo();
+            label1.Text = osInfo.OS + " " + (osInfo.is64bit ? "64bit" : "32bit");
+
             // Get System info and changed URL for the current OS
-             string OSid = CurrentOS();
+            string OSid = CurrentOS(osInfo);
+
             // osid = Which OS
             string url = string.Format("http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid={0}&lid=9&whql=&lang=de&ctk=0",OSid);
             HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(url);
@@ -90,7 +100,7 @@ namespace EasyDriverDownloader
             public string Version { get; set; }
             public bool is64bit { get; set; }
 
-            public void GetCurrentOS()
+            public OSInfo()
             {
                 // Get current System info
                 OS = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.OperatingSystem;
@@ -101,10 +111,9 @@ namespace EasyDriverDownloader
             }
         }
 
-        private string CurrentOS()
+        private string CurrentOS(OSInfo osInfo)
         {
-            OSInfo osInfo = new OSInfo();
-            osInfo.GetCurrentOS();
+            //OSInfo osInfo = new OSInfo();
 
             if (string.Equals(osInfo.OS, "Windows"))
             {

@@ -28,10 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.comboBoxVersion = new System.Windows.Forms.ComboBox();
             this.btnDownload = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.notifyMessage = new System.Windows.Forms.NotifyIcon(this.components);
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,17 +75,33 @@
             this.toolStripProgressBar1.AutoSize = false;
             this.toolStripProgressBar1.Margin = new System.Windows.Forms.Padding(3, 3, 1, 3);
             this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(130, 16);
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(160, 16);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "label1";
+            // 
+            // notifyMessage
+            // 
+            this.notifyMessage.Text = "notifyIcon1";
+            this.notifyMessage.Visible = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(186, 142);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnDownload);
             this.Controls.Add(this.comboBoxVersion);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
@@ -99,6 +119,8 @@
         private System.Windows.Forms.Button btnDownload;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NotifyIcon notifyMessage;
     }
 }
 
