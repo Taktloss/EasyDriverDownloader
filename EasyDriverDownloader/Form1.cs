@@ -7,13 +7,15 @@ using System.Net;
 using System.IO;
 using HtmlAgilityPack;
 using System.Drawing;
+using System.Management;
 
 namespace EasyDriverDownloader
 {
     public partial class frmMain : Form
     {
         // Dictonary for the Driver Version and URL
-        Dictionary<string, string> driverList;
+        private Dictionary<string, string> driverList;
+        private string filename;
 
         public frmMain()
         {
@@ -32,7 +34,7 @@ namespace EasyDriverDownloader
                 WebClient client = new WebClient();
                 string driverUrl = driverList[comboBoxVersion.SelectedItem.ToString()];
                 // Get the filename
-                string filename = Path.GetFileName(driverUrl);
+                filename = Path.GetFileName(driverUrl);
 
                 // Create Download events and start asynchron Download
                 client.DownloadFileCompleted += Client_DownloadFileCompleted;
@@ -57,19 +59,24 @@ namespace EasyDriverDownloader
             NotifyIcon notifyMessage = new NotifyIcon();
             notifyMessage.Icon = SystemIcons.Application;
             notifyMessage.Visible = true;
-            notifyMessage.ShowBalloonTip(5000, "Download finished", "The Nvidia Setup file was download", ToolTipIcon.Info);
-            
-            // Open current directory
-            System.Diagnostics.Process.Start(".");
+            notifyMessage.ShowBalloonTip(8000, "Download finished", "The Nvidia Setup file was download.\nClick to Install Driver.", ToolTipIcon.Info);
+            notifyMessage.BalloonTipClicked += NotifyMessage_BalloonTipClicked;
         }
+
+        private void NotifyMessage_BalloonTipClicked(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(Application.StartupPath + "\\" + filename);            
+        }          
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            OSInfo osInfo = new OSInfo();
-            label1.Text = osInfo.OS + " " + (osInfo.is64bit ? "64bit" : "32bit");
+            toolStripProgressBar1.Width = statusStrip1.Width - 150;
 
             // Get System info and changed URL for the current OS
-            string OSid = CurrentOS(osInfo);
+            OSInfo osInfo = OSInfo.Instance;
+            label1.Text += string.Format("{0} {1} {2}", osInfo.OS, osInfo.Version, (osInfo.is64bit ? "64bit" : "32bit"));
+            label2.Text += GPUInfo.Instance.currentGPUVersion;
+            string OSid = GetOSId(osInfo);
 
             // osid = Which OS
             string url = string.Format("http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid={0}&lid=9&whql=&lang=de&ctk=0",OSid);
@@ -81,11 +88,11 @@ namespace EasyDriverDownloader
 
             foreach (HtmlNode currentNode in driverNodes)
             {
-                // Get all column nodes 
+                // Get all column nodes
                 HtmlNodeCollection tmpNodes = currentNode.SelectNodes(".//td");
                 // Get Version Numbers and create the download Url
                 string version = tmpNodes[2].InnerText;
-                string driverUrl = string.Format("http://de.download.nvidia.com/Windows/{0}/{0}-desktop-win10-64bit-international-whql.exe", version);
+                string driverUrl = string.Format("http://de.download.nvidia.com/Windows/{0}/{0}-desktop-win10-{1}-international-whql.exe", version, OSInfo.Instance.is64bit ? "64bit" : "32bit");
                 // Add to driveList directory
                 driverList.Add(version, driverUrl);
             }
@@ -93,31 +100,11 @@ namespace EasyDriverDownloader
             comboBoxVersion.Items.AddRange(driverList.Keys.ToArray());
             comboBoxVersion.SelectedIndex = 0;
         }
-
-        class OSInfo
+                
+        private string GetOSId(OSInfo osInfo)
         {
-            public string OS { get; set; }
-            public string Version { get; set; }
-            public bool is64bit { get; set; }
-
-            public OSInfo()
-            {
-                // Get current System info
-                OS = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.OperatingSystem;
-                // Environment.OSVersion.VersionString gives back the wrong Windows Version for Win 10 !?
-                //string Version = Environment.OSVersion.VersionString;
-                Version = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.OperatingSystemVersion;
-                is64bit = Environment.Is64BitOperatingSystem;
-            }
-        }
-
-        private string CurrentOS(OSInfo osInfo)
-        {
-            //OSInfo osInfo = new OSInfo();
-
             if (string.Equals(osInfo.OS, "Windows"))
             {
-                // Shorten Version string so we only need to check the first digit
                 string versionShort = osInfo.Version.Substring(0, osInfo.Version.IndexOf('.'));
                 switch ( versionShort)
                 {
