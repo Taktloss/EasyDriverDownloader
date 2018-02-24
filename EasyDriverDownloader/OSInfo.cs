@@ -16,7 +16,7 @@ namespace EasyDriverDownloader
 
         private OSInfo()
         {
-            // Get current System info
+            // Get current System info 
             OS = Microsoft.DotNet.PlatformAbstractions.RuntimeEnvironment.OperatingSystem;
             // Environment.OSVersion.VersionString gives back the wrong Windows Version for Win 10 !?
             //string Version = Environment.OSVersion.VersionString;
