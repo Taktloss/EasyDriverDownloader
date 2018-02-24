@@ -21,7 +21,7 @@ namespace EasyDriverDownloader
             ManagementObjectCollection objCollection = new ManagementObjectSearcher("SELECT * FROM Win32_VideoController").Get();
 
             foreach (ManagementObject obj in objCollection)
-            {
+            {  
                 if (obj["Description"].ToString().ToLower().Contains("nvidia"))
                 {
                     string info = String.Format("Description='{0}',DriverVersion='{1}' ", obj["Description"], obj["DriverVersion"]);
