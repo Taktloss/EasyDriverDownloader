@@ -59,5 +59,15 @@ namespace EasyDriverDownloader.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Icon ähnlich wie (Symbol).
+        /// </summary>
+        internal static System.Drawing.Icon icons8_source_code_50 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_source_code_50", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }
