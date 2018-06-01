@@ -72,8 +72,8 @@
             // 
             this.statusStrip1.AutoSize = false;
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblProgress,
-            this.toolStripProgressBar});
+            this.toolStripProgressBar,
+            this.lblProgress});
             this.statusStrip1.Location = new System.Drawing.Point(0, 193);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
@@ -88,7 +88,6 @@
             this.lblProgress.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(130, 20);
-            this.lblProgress.Text = "Download:";
             this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // toolStripProgressBar
@@ -110,6 +109,7 @@
             // 
             // notifyMessage
             // 
+            this.notifyMessage.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyMessage.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyMessage.Icon")));
             this.notifyMessage.Text = "Easy Driver Downloader";
             this.notifyMessage.Visible = true;
@@ -169,7 +169,9 @@
             this.Margin = new System.Windows.Forms.Padding(2, 10, 2, 10);
             this.MaximizeBox = false;
             this.Name = "frmMain";
+            this.ShowInTaskbar = false;
             this.Text = "Easy Driver Downloader";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMain_FormClosed);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

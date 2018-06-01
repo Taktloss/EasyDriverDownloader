@@ -76,10 +76,7 @@ namespace EasyDriverDownloader
             }
 
             // Show Notify Message in taskbar
-            NotifyIcon notifyMessage = new NotifyIcon();
-            notifyMessage.Icon = SystemIcons.Application;
-            notifyMessage.Visible = true;
-            notifyMessage.ShowBalloonTip(8000, "Download finished", "The Nvidia Setup file was download.\nClick to Install Driver.", ToolTipIcon.Info);
+            notifyMessage.ShowBalloonTip(6000, "Download finished", "The Nvidia Setup file was download.\nClick to Install Driver.", ToolTipIcon.Info);
             notifyMessage.BalloonTipClicked += NotifyMessage_BalloonTipClicked;
         }
 
@@ -88,6 +85,7 @@ namespace EasyDriverDownloader
             try
             {
                 System.Diagnostics.Process.Start(Application.StartupPath + "\\" + filename);
+                notifyMessage.Visible = false;
             }
             catch (Exception)
             {
@@ -158,6 +156,13 @@ namespace EasyDriverDownloader
         private void notifyMessage_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             string HH;
+        }
+
+        private void frmMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            notifyMessage.Visible = false;
+            notifyMessage.Icon = null;
+            notifyMessage.Dispose();
         }
     }
 }
