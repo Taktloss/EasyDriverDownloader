@@ -1,13 +1,12 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Windows.Forms;
-using System.Net;
-using System.IO;
-using HtmlAgilityPack;
 using System.Drawing;
-using System.Management;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Windows.Forms;
 
 namespace EasyDriverDownloader
 {
@@ -26,7 +25,9 @@ namespace EasyDriverDownloader
         {
             btnDownload.Enabled = true;
         }
-        WebClient client;
+
+        private WebClient client;
+
         private void btnDownload_Click(object sender, EventArgs e)
         {
             try
@@ -53,13 +54,14 @@ namespace EasyDriverDownloader
             {
                 // Show Download progress
                 toolStripProgressBar.Value = e.ProgressPercentage;
-                lblProgress.Text = string.Format("Download: {0}%", e.ProgressPercentage);
+                lblProgress.Text = string.Format("{0} MB / {1} MB",
+                    (e.BytesReceived / 1024d / 1024d).ToString("0.00"),
+                    (e.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
             }
             catch (Exception)
             {
                 // In case the user kills the application
                 client.CancelAsync();
-                //Application.ExitThread();
             }
         }
 
@@ -90,8 +92,8 @@ namespace EasyDriverDownloader
             catch (Exception)
             {
                 // User didnt allow admin rights
-            }         
-        }          
+            }
+        }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -102,10 +104,10 @@ namespace EasyDriverDownloader
             string OSid = GetOSId(osInfo);
 
             // osid = Which OS
-            string url = string.Format("http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid={0}&lid=9&whql=&lang=de&ctk=0",OSid);
+            string url = string.Format("http://www.nvidia.de/Download/processFind.aspx?psid=101&pfid=817&osid={0}&lid=9&whql=&lang=de&ctk=0", OSid);
             HtmlAgilityPack.HtmlDocument doc = new HtmlWeb().Load(url);
 
-            // Get driver list with XPath	
+            // Get driver list with XPath
             HtmlNodeCollection driverNodes = doc.DocumentNode.SelectNodes("//table/tr[@id='driverList']");
             driverList = new Dictionary<string, string>(driverNodes.Count);
 
@@ -126,26 +128,26 @@ namespace EasyDriverDownloader
             Version currentVersion = new Version(GPUInfo.Instance.currentGPUVersion);
             Version newestVersion = new Version(driverList.Keys.ToArray()[0]);
 
-            if(currentVersion.CompareTo(newestVersion) < 0 )
+            if (currentVersion.CompareTo(newestVersion) < 0)
             {
                 lblNewVersionCheck.Text = "New Nvidia Driver Version " + newestVersion.ToString() + " available.";
             }
             else
             {
-                lblNewVersionCheck.Text = "Newest Nvidia Driver already installed";
+                lblNewVersionCheck.Text = "Newest Nvidia Driver already installed.";
             }
         }
-                
+
         private string GetOSId(OSInfo osInfo)
         {
             if (string.Equals(osInfo.OS, "Windows"))
             {
                 string versionShort = osInfo.Version.Substring(0, osInfo.Version.IndexOf('.'));
-                switch ( versionShort)
+                switch (versionShort)
                 {
-                    case "10":  return "57";
-                    case "8":   return "41";
-                    case "7":   return "19";
+                    case "10": return "57";
+                    case "8": return "41";
+                    case "7": return "19";
                     default:
                         break;
                 }

@@ -33,13 +33,13 @@
             this.comboBoxVersion = new System.Windows.Forms.ComboBox();
             this.btnDownload = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.lblOSVersion = new System.Windows.Forms.Label();
             this.notifyMessage = new System.Windows.Forms.NotifyIcon(this.components);
             this.lblCurrentDriverVer = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblNewVersionCheck = new System.Windows.Forms.Label();
-            this.lblProgress = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +49,7 @@
             this.comboBoxVersion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxVersion.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBoxVersion.FormattingEnabled = true;
-            this.comboBoxVersion.Location = new System.Drawing.Point(96, 127);
+            this.comboBoxVersion.Location = new System.Drawing.Point(120, 130);
             this.comboBoxVersion.Margin = new System.Windows.Forms.Padding(2, 10, 2, 10);
             this.comboBoxVersion.Name = "comboBoxVersion";
             this.comboBoxVersion.Size = new System.Drawing.Size(110, 21);
@@ -59,7 +59,7 @@
             // btnDownload
             // 
             this.btnDownload.Enabled = false;
-            this.btnDownload.Location = new System.Drawing.Point(96, 156);
+            this.btnDownload.Location = new System.Drawing.Point(120, 158);
             this.btnDownload.Margin = new System.Windows.Forms.Padding(2, 10, 2, 10);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(110, 23);
@@ -77,15 +77,25 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 193);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(303, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(347, 25);
+            this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = false;
+            this.lblProgress.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(130, 20);
+            this.lblProgress.Text = "Download:";
+            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // toolStripProgressBar
             // 
             this.toolStripProgressBar.Margin = new System.Windows.Forms.Padding(3, 3, 1, 3);
             this.toolStripProgressBar.Name = "toolStripProgressBar";
-            this.toolStripProgressBar.Size = new System.Drawing.Size(185, 23);
+            this.toolStripProgressBar.Size = new System.Drawing.Size(185, 19);
             // 
             // lblOSVersion
             // 
@@ -93,7 +103,7 @@
             this.lblOSVersion.Location = new System.Drawing.Point(2, 25);
             this.lblOSVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblOSVersion.Name = "lblOSVersion";
-            this.lblOSVersion.Size = new System.Drawing.Size(275, 24);
+            this.lblOSVersion.Size = new System.Drawing.Size(319, 24);
             this.lblOSVersion.TabIndex = 6;
             this.lblOSVersion.Text = "OS Version: ";
             this.lblOSVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -111,7 +121,7 @@
             this.lblCurrentDriverVer.Location = new System.Drawing.Point(2, 49);
             this.lblCurrentDriverVer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCurrentDriverVer.Name = "lblCurrentDriverVer";
-            this.lblCurrentDriverVer.Size = new System.Drawing.Size(275, 24);
+            this.lblCurrentDriverVer.Size = new System.Drawing.Size(319, 24);
             this.lblCurrentDriverVer.TabIndex = 8;
             this.lblCurrentDriverVer.Text = "Current Driver Version: ";
             this.lblCurrentDriverVer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -128,7 +138,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 10, 2, 10);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 10, 2, 10);
-            this.groupBox1.Size = new System.Drawing.Size(279, 110);
+            this.groupBox1.Size = new System.Drawing.Size(323, 110);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "System Info";
@@ -139,25 +149,16 @@
             this.lblNewVersionCheck.Location = new System.Drawing.Point(2, 73);
             this.lblNewVersionCheck.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblNewVersionCheck.Name = "lblNewVersionCheck";
-            this.lblNewVersionCheck.Size = new System.Drawing.Size(275, 24);
+            this.lblNewVersionCheck.Size = new System.Drawing.Size(319, 24);
             this.lblNewVersionCheck.TabIndex = 9;
             this.lblNewVersionCheck.Text = "New Driver";
             this.lblNewVersionCheck.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblProgress
-            // 
-            this.lblProgress.AutoSize = false;
-            this.lblProgress.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(95, 24);
-            this.lblProgress.Text = "Download:";
-            this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(303, 218);
+            this.ClientSize = new System.Drawing.Size(347, 218);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnDownload);
