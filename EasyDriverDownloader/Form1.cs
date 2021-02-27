@@ -97,8 +97,6 @@ namespace EasyDriverDownloader
         {
             // Get System info and changed URL for the current OS
             OSInfo osInfo = OSInfo.Instance;
-            lblOSVersion.Text += string.Format("{0} {1} - {2}", osInfo.OS, osInfo.Version, (osInfo.is64bit ? "64bit" : "32bit"));
-            lblCurrentDriverVer.Text += GPUInfo.Instance.currentGPUVersion;
             string OSid = GetOSId(osInfo);
 
             // osid = Which OS
@@ -125,12 +123,21 @@ namespace EasyDriverDownloader
                 {
                     Console.WriteLine(ex.Message);
                 }
-                
-            }
-            // Add driverList to combobox and select first item
-            comboBoxVersion.Items.AddRange(driverList.Keys.ToArray());
-            comboBoxVersion.SelectedIndex = 0;
 
+            }
+
+
+            // Add driverList to combobox and select first item
+            SetupComboBox();
+
+            // Setup labels
+            SetupLabels(osInfo);
+        }
+
+        private void SetupLabels(OSInfo osInfo)
+        {
+            lblOSVersion.Text += string.Format("{0} {1} - {2}", osInfo.OS, osInfo.Version, (osInfo.is64bit ? "64bit" : "32bit"));
+            lblCurrentDriverVer.Text += GPUInfo.Instance.currentGPUVersion;
             Version currentVersion = new Version(GPUInfo.Instance.currentGPUVersion);
             Version newestVersion = new Version(driverList.Keys.ToArray()[0]);
 
@@ -142,6 +149,12 @@ namespace EasyDriverDownloader
             {
                 lblNewVersionCheck.Text = "Newest Nvidia Driver already installed.";
             }
+        }
+
+        private void SetupComboBox()
+        {
+            comboBoxVersion.Items.AddRange(driverList.Keys.ToArray());
+            comboBoxVersion.SelectedIndex = 0;
         }
 
         private string GetOSId(OSInfo osInfo)
