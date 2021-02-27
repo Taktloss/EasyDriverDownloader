@@ -117,7 +117,15 @@ namespace EasyDriverDownloader
                 string version = tmpNodes[2].InnerText;
                 string driverUrl = string.Format("http://de.download.nvidia.com/Windows/{0}/{0}-desktop-win10-{1}-international-whql.exe", version, OSInfo.Instance.is64bit ? "64bit" : "32bit");
                 // Add to driveList directory
-                driverList.Add(version, driverUrl);
+                try
+                {
+                    driverList.Add(version, driverUrl);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                
             }
             // Add driverList to combobox and select first item
             comboBoxVersion.Items.AddRange(driverList.Keys.ToArray());

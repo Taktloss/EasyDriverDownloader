@@ -49,7 +49,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5291191BB1EFE900B01EAF78BFBC4173476EFA42</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>EC245B323331D495062D988C2670C18FEAC9B43E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>EasyDriverDownloader_TemporaryKey.pfx</ManifestKeyFile>
@@ -58,7 +58,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\icons8-source-code-50.ico</ApplicationIcon>
